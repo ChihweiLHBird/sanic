@@ -8,6 +8,8 @@ from time import gmtime, strftime
 
 import pytest
 
+from pytest import LogCaptureFixture
+
 from sanic import text
 from sanic.exceptions import FileNotFound
 
@@ -477,7 +479,9 @@ def test_handle_is_a_directory_error(app, static_file_directory):
     assert response.text == error_text
 
 
-def test_stack_trace_on_not_found(app, static_file_directory, caplog):
+def test_stack_trace_on_not_found(
+    app, static_file_directory, caplog: LogCaptureFixture
+):
     app.static("/static", static_file_directory)
 
     with caplog.at_level(logging.INFO):
@@ -491,7 +495,9 @@ def test_stack_trace_on_not_found(app, static_file_directory, caplog):
     assert counter[("sanic.error", logging.ERROR)] == 0
 
 
-def test_no_stack_trace_on_not_found(app, static_file_directory, caplog):
+def test_no_stack_trace_on_not_found(
+    app, static_file_directory, caplog: LogCaptureFixture
+):
     app.static("/static", static_file_directory)
 
     @app.exception(FileNotFound)
@@ -575,6 +581,8 @@ def test_resource_type_dir(app, static_file_directory):
         )
 
 
-def test_resource_type_unknown(app, static_file_directory, caplog):
+def test_resource_type_unknown(
+    app, static_file_directory, caplog: LogCaptureFixture
+):
     with pytest.raises(ValueError):
         app.static("/static", static_file_directory, resource_type="unknown")

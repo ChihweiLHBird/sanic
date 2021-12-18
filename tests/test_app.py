@@ -8,6 +8,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
+from pytest import LogCaptureFixture
+
 from sanic import Sanic
 from sanic.config import Config
 from sanic.exceptions import SanicException
@@ -74,7 +76,7 @@ def test_asyncio_server_start_serving(app):
     # Looks like we can't easily test `serve_forever()`
 
 
-def test_create_server_main(app, caplog):
+def test_create_server_main(app, caplog: LogCaptureFixture):
     app.listener("main_process_start")(lambda *_: ...)
     loop = asyncio.get_event_loop()
     with caplog.at_level(logging.INFO):
@@ -103,7 +105,7 @@ def test_create_server_no_startup(app):
         loop.run_until_complete(srv.start_serving())
 
 
-def test_create_server_main_convenience(app, caplog):
+def test_create_server_main_convenience(app, caplog: LogCaptureFixture):
     app.main_process_start(lambda *_: ...)
     loop = asyncio.get_event_loop()
     with caplog.at_level(logging.INFO):
@@ -117,7 +119,7 @@ def test_create_server_main_convenience(app, caplog):
     ) in caplog.record_tuples
 
 
-def test_create_server_init(app, caplog):
+def test_create_server_init(app, caplog: LogCaptureFixture):
     loop = asyncio.get_event_loop()
     asyncio_srv_coro = app.create_server(return_asyncio_server=True)
     server = loop.run_until_complete(asyncio_srv_coro)
@@ -274,7 +276,9 @@ def test_handle_request_with_nested_exception_debug(app, monkeypatch):
     )
 
 
-def test_handle_request_with_nested_sanic_exception(app, monkeypatch, caplog):
+def test_handle_request_with_nested_sanic_exception(
+    app, monkeypatch, caplog: LogCaptureFixture
+):
 
     # Not sure how to raise an exception in app.error_handler.response(), use mock here
     def mock_error_handler_response(*args, **kwargs):

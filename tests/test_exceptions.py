@@ -4,6 +4,7 @@ import warnings
 import pytest
 
 from bs4 import BeautifulSoup
+from pytest import LogCaptureFixture
 
 from sanic import Sanic
 from sanic.exceptions import (
@@ -261,7 +262,7 @@ def test_custom_exception_default_message(exception_app):
     assert b"Tempest in a teapot" in response.body
 
 
-def test_exception_in_ws_logged(caplog):
+def test_exception_in_ws_logged(caplog: LogCaptureFixture):
     app = Sanic(__file__)
 
     @app.websocket("/feed")

@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 
 import pytest
 
+from pytest import LogCaptureFixture
 from sanic_testing.testing import (
     ASGI_BASE_URL,
     ASGI_PORT,
@@ -1341,7 +1342,9 @@ async def test_request_multipart_file_with_json_content_type_asgi(app):
     assert request.files.get("file").type == "application/json"
 
 
-def test_request_multipart_file_without_field_name(app, caplog):
+def test_request_multipart_file_without_field_name(
+    app, caplog: LogCaptureFixture
+):
     @app.route("/", methods=["POST"])
     async def post(request):
         return text("OK")
@@ -1507,7 +1510,7 @@ def test_request_bool(app):
     assert bool(request)
 
 
-def test_request_parsing_form_failed(app, caplog):
+def test_request_parsing_form_failed(app, caplog: LogCaptureFixture):
     @app.route("/", methods=["POST"])
     async def handler(request):
         return text("OK")
@@ -1530,7 +1533,9 @@ def test_request_parsing_form_failed(app, caplog):
 
 
 @pytest.mark.asyncio
-async def test_request_parsing_form_failed_asgi(app, caplog):
+async def test_request_parsing_form_failed_asgi(
+    app, caplog: LogCaptureFixture
+):
     @app.route("/", methods=["POST"])
     async def handler(request):
         return text("OK")

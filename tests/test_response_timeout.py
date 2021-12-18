@@ -3,6 +3,8 @@ import logging
 
 from time import sleep
 
+from pytest import LogCaptureFixture
+
 from sanic import Sanic
 from sanic.exceptions import ServiceUnavailable
 from sanic.log import LOGGING_CONFIG_DEFAULTS
@@ -72,7 +74,7 @@ def test_response_handler_cancelled():
     assert response_handler_cancelled_app.ctx.flag is False
 
 
-def test_response_timeout_not_applied(caplog):
+def test_response_timeout_not_applied(caplog: LogCaptureFixture):
     modified_config = LOGGING_CONFIG_DEFAULTS
     modified_config["loggers"]["sanic.root"]["level"] = "DEBUG"
 

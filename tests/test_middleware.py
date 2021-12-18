@@ -3,6 +3,8 @@ import logging
 from asyncio import CancelledError
 from itertools import count
 
+from pytest import LogCaptureFixture
+
 from sanic.exceptions import NotFound
 from sanic.request import Request
 from sanic.response import HTTPResponse, json, text
@@ -152,7 +154,9 @@ def test_middleware_response_exception(app):
     assert result["status_code"] == 404
 
 
-def test_middleware_response_raise_cancelled_error(app, caplog):
+def test_middleware_response_raise_cancelled_error(
+    app, caplog: LogCaptureFixture
+):
     app.config.RESPONSE_TIMEOUT = 1
 
     @app.middleware("response")
@@ -174,7 +178,7 @@ def test_middleware_response_raise_cancelled_error(app, caplog):
         ) not in caplog.record_tuples
 
 
-def test_middleware_response_raise_exception(app, caplog):
+def test_middleware_response_raise_exception(app, caplog: LogCaptureFixture):
     @app.middleware("response")
     async def process_response(request, response):
         raise Exception("Exception at response middleware")

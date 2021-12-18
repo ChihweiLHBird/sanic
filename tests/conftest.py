@@ -11,6 +11,7 @@ from typing import Callable, List, Tuple
 
 import pytest
 
+from pytest import LogCaptureFixture
 from sanic_routing.exceptions import RouteExists
 from sanic_testing.testing import PORT
 
@@ -151,7 +152,7 @@ def app(request):
 
 
 @pytest.fixture(scope="function")
-def run_startup(caplog):
+def run_startup(caplog: LogCaptureFixture):
     def run(app):
         nonlocal caplog
         loop = asyncio.new_event_loop()

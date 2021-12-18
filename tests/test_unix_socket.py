@@ -9,6 +9,8 @@ import httpcore
 import httpx
 import pytest
 
+from pytest import LogCaptureFixture
+
 from sanic import Sanic
 from sanic.response import text
 
@@ -40,7 +42,7 @@ def socket_cleanup():
         pass
 
 
-def test_unix_socket_creation(caplog):
+def test_unix_socket_creation(caplog: LogCaptureFixture):
     from socket import AF_UNIX, socket
 
     with socket(AF_UNIX) as sock:

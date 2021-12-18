@@ -7,6 +7,8 @@ from unittest.mock import Mock
 
 import pytest
 
+from pytest import LogCaptureFixture
+
 import sanic
 
 from sanic import Sanic
@@ -133,7 +135,7 @@ def test_log_connection_lost(app, debug, monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_logger(caplog):
+async def test_logger(caplog: LogCaptureFixture):
     rand_string = str(uuid.uuid4())
 
     app = Sanic(name=__name__)

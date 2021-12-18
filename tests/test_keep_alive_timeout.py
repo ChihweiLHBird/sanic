@@ -11,6 +11,7 @@ from sanic_testing.reusable import ReusableClient
 
 from sanic import Sanic
 from sanic.compat import OS_IS_WINDOWS
+from sanic.request import Request
 from sanic.response import text
 
 
@@ -36,28 +37,28 @@ keep_alive_app_context.config.update(CONFIG_FOR_TESTS)
 
 
 @keep_alive_timeout_app_reuse.route("/1")
-async def handler1(request):
+async def handler1(request: Request):
     return text("OK")
 
 
 @keep_alive_app_client_timeout.route("/1")
-async def handler2(request):
+async def handler2(request: Request):
     return text("OK")
 
 
 @keep_alive_app_server_timeout.route("/1")
-async def handler3(request):
+async def handler3(request: Request):
     return text("OK")
 
 
 @keep_alive_app_context.post("/ctx")
-def set_ctx(request):
+def set_ctx(request: Request):
     request.conn_info.ctx.foo = "hello"
     return text("OK")
 
 
 @keep_alive_app_context.get("/ctx")
-def get_ctx(request):
+def get_ctx(request: Request):
     return text(request.conn_info.ctx.foo)
 
 

@@ -3,6 +3,8 @@ import platform
 
 from unittest.mock import Mock
 
+from pytest import LogCaptureFixture
+
 from sanic import __version__
 from sanic.application.logo import BASE_LOGO
 from sanic.application.motd import MOTDTTY
@@ -63,7 +65,7 @@ def test_motd_init():
     MOTDTTY.set_variables = _orig
 
 
-def test_motd_display(caplog):
+def test_motd_display(caplog: LogCaptureFixture):
     motd = MOTDTTY("       foobar        ", "", {"one": "1"}, {"two": "2"})
 
     with caplog.at_level(logging.INFO):

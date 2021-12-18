@@ -6,6 +6,7 @@ import signal
 
 import pytest
 
+from pytest import LogCaptureFixture
 from sanic_testing.testing import HOST, PORT
 
 from sanic import Blueprint
@@ -112,7 +113,7 @@ def test_pickle_app_with_static(app, protocol):
     assert response.status == 404
 
 
-def test_main_process_event(app, caplog):
+def test_main_process_event(app, caplog: LogCaptureFixture):
     # Selects a number at random so we can spot check
     num_workers = random.choice(range(2, multiprocessing.cpu_count() * 2 + 1))
 

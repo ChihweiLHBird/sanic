@@ -4,6 +4,8 @@ from unittest.mock import patch
 
 import pytest
 
+from pytest import LogCaptureFixture
+
 from sanic.application.logo import COFFEE_LOGO, get_logo
 from sanic.exceptions import SanicException
 
@@ -31,7 +33,7 @@ def test_get_logo_returns_expected_logo():
     assert logo is COFFEE_LOGO
 
 
-def test_logo_true(app, caplog):
+def test_logo_true(app, caplog: LogCaptureFixture):
     @app.after_server_start
     async def shutdown(*_):
         app.stop()
