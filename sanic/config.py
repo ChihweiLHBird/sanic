@@ -10,7 +10,7 @@ from sanic.helpers import Default, _default
 from sanic.http import Http
 from sanic.log import deprecation, error_logger
 from sanic.utils import load_module_from_file_location, str_to_bool
-
+from sanic.log import deprecation
 
 SANIC_PREFIX = "SANIC_"
 
@@ -222,6 +222,11 @@ class Config(dict, metaclass=DescriptorMeta):
         for key, value in environ.items():
             if not key.startswith(prefix):
                 continue
+            if not key.isupper():
+                deprecation(
+                    "Lowercase environment variables won't be "
+                    "catch for sanic config in the future version, 22.9"
+                )
 
             _, config_key = key.split(prefix, 1)
 
